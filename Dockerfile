@@ -34,6 +34,18 @@ RUN php artisan key:generate
 COPY docker/php-test.ini /usr/local/etc/php/php.ini
 ENTRYPOINT [ "/srv/vendor/bin/phpunit" ]
 
+# Frontend build stage
+FROM --platform=${BUILDPLATFORM} node:20-alpine AS frontend
+WORKDIR /build
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY vite.config.js vite.version.js tsconfig.json ./
+COPY resources ./resources
+COPY public ./public
+ARG ASSET_URL
+ENV ASSET_URL=${ASSET_URL}
+RUN npm run build
+
 FROM alpine:${ALPINE_VERSION}
 ARG UID=1000
 ARG GID=1000
@@ -99,8 +111,11 @@ USER ${UID}:${GID}
 # Dependencies
 COPY --from=vendor --chown=${UID}:${GID} /srv/vendor /srv/vendor
 
-# Copy the rest of the code
+# Copy the rest of the code first
 COPY --chown=${UID}:${GID} . .
+
+# Copy frontend assets (this will overlay the build directory)
+COPY --from=frontend --chown=${UID}:${GID} /build/public/build /srv/public/build
 # RUN composer dump-autoload --no-scripts --no-dev --optimize
 
 # Entrypoint

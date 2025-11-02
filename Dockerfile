@@ -40,6 +40,7 @@ WORKDIR /build
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY vite.config.js vite.version.js tsconfig.json ./
+COPY config/2fauth.php ./config/2fauth.php
 COPY resources ./resources
 COPY public ./public
 ARG ASSET_URL

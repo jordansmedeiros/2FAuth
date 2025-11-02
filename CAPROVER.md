@@ -8,6 +8,22 @@ Este guia descreve como fazer o deploy do 2FAuth no CapRover usando deploy autom
 - Repositório GitHub do 2FAuth
 - Acesso ao painel do CapRover
 
+## Resumo Rápido
+
+**✅ SQLite funciona automaticamente!** Não é necessário configurar MySQL ou PostgreSQL. O sistema:
+- Usa SQLite por padrão (já configurado no Dockerfile)
+- Cria o banco de dados automaticamente no primeiro deploy
+- Executa as migrações automaticamente
+- Persiste os dados no volume configurado
+
+**Configuração mínima necessária:**
+1. Criar aplicação no CapRover
+2. Configurar volume persistente em `/2fauth`
+3. Definir apenas 4 variáveis de ambiente: `APP_KEY`, `APP_URL`, `APP_ENV`, `TRUSTED_PROXIES`
+4. Configurar webhook do GitHub para deploy automático
+
+Pronto! O restante funciona automaticamente.
+
 ## Configuração Inicial
 
 ### 1. Criar uma Nova Aplicação no CapRover
@@ -15,7 +31,9 @@ Este guia descreve como fazer o deploy do 2FAuth no CapRover usando deploy autom
 1. Acesse o painel do CapRover
 2. Vá para "Apps" e clique em "One-Click Apps/Database" ou crie uma nova app manualmente
 3. Clique em "Create New App" e dê um nome para sua aplicação (ex: `2fauth`)
-4. Certifique-se de que a aplicação está configurada para escutar na porta interna (CapRover detecta automaticamente a porta EXPOSE do Dockerfile)
+4. **⚠️ IMPORTANTE:** Marque a opção **"Has Persistent Data"** (Possui dados persistentes)
+   - Esta opção é essencial para que o banco de dados SQLite e os arquivos de storage sejam preservados
+5. Certifique-se de que a aplicação está configurada para escutar na porta interna (CapRover detecta automaticamente a porta EXPOSE do Dockerfile)
 
 ### 2. Configurar Deploy Automático via GitHub
 
@@ -66,17 +84,29 @@ TRUSTED_PROXIES=*
 
 - `TRUSTED_PROXIES` deve ser `*` para confiar em todos os proxies (necessário quando atrás do proxy reverso do CapRover)
 
+### Banco de Dados SQLite (Configuração Automática)
+
+**✅ SQLite é a configuração padrão e funciona automaticamente!**
+
+O 2FAuth está configurado para usar SQLite por padrão. Você **NÃO precisa** configurar nenhuma variável de ambiente relacionada ao banco de dados. O sistema:
+
+- ✅ Cria automaticamente o arquivo `database.sqlite` em `/2fauth/database.sqlite`
+- ✅ Executa as migrações automaticamente na primeira inicialização
+- ✅ Persiste os dados no volume montado em `/2fauth`
+
+**Nenhuma configuração adicional é necessária para SQLite!** Apenas certifique-se de ter configurado o volume persistente conforme descrito na seção "Persistência de Dados".
+
 ### Variáveis Recomendadas para Produção
 
 ```env
 APP_DEBUG=false
 LOG_CHANNEL=daily
 LOG_LEVEL=notice
-DB_CONNECTION=sqlite
-DB_DATABASE=/2fauth/database.sqlite
 CACHE_DRIVER=file
 SESSION_DRIVER=file
 ```
+
+**Nota:** As variáveis `DB_CONNECTION` e `DB_DATABASE` são opcionais se você quiser usar SQLite (que já é o padrão). Defina-as apenas se quiser usar MySQL ou PostgreSQL.
 
 ### Variáveis Opcionais
 
@@ -125,20 +155,42 @@ CONTENT_SECURITY_POLICY=true
 
 O 2FAuth armazena dados no diretório `/2fauth` dentro do container:
 
-- **Database SQLite**: `/2fauth/database.sqlite`
-- **Storage**: `/2fauth/storage`
+- **Database SQLite**: `/2fauth/database.sqlite` (criado automaticamente)
+- **Storage**: `/2fauth/storage` (logs, cache, arquivos temporários)
 
 ### Configurar Volume Persistente
 
+**⚠️ IMPORTANTE:** Configure o volume **ANTES** do primeiro deploy para garantir que os dados sejam persistidos.
+
 No CapRover, configure um volume para persistir os dados:
 
-1. Na página da aplicação, vá para **Volumes**
-2. Adicione um novo volume:
-   - **Volume name**: `2fauth-data`
-   - **Mount path**: `/2fauth`
-   - **Is Dir**: ✓ (marcado)
+1. Na página da aplicação, vá para **Volumes** ou **Diretórios Persistentes**
+2. Adicione um novo volume preenchendo os campos:
+   
+   **Caminho no App** (Path in App):
+   ```
+   /2fauth
+   ```
+   - Este é o caminho dentro do container onde os dados serão armazenados
+   
+   **Rótulo** (Label):
+   ```
+   2fauth-data
+   ```
+   - Este é apenas um nome identificador para você (pode ser qualquer nome descritivo)
+   - Exemplos: `2fauth-data`, `dados-2fauth`, `persistent-storage`
+
+3. Se necessário, configure opções adicionais:
+   - **Is Dir**: ✓ (deve estar marcado)
+   - **Define specific path on host**: Use apenas se precisar de um caminho específico no host
 
 Isso garantirá que seus dados sejam preservados mesmo após atualizações ou reinicializações do container.
+
+**Nota sobre SQLite:** O banco de dados SQLite será criado automaticamente no primeiro deploy dentro do volume persistente. Não é necessário criar manualmente o arquivo `database.sqlite`.
+
+**Resumo dos campos:**
+- **Caminho no App**: `/2fauth` (caminho fixo usado pelo 2FAuth)
+- **Rótulo**: Qualquer nome descritivo (ex: `2fauth-data`)
 
 ## Configuração de Domínio
 
@@ -183,9 +235,10 @@ O 2FAuth expõe a porta 8000. O CapRover automaticamente verifica a saúde da ap
 
 ### Erro de Conexão com Banco de Dados
 
-- Certifique-se de que o volume está montado corretamente
-- Verifique permissões do arquivo de banco de dados
-- O arquivo SQLite deve estar em `/2fauth/database.sqlite`
+- Certifique-se de que o volume está montado corretamente em `/2fauth`
+- Verifique permissões do arquivo de banco de dados (o container cria automaticamente com as permissões corretas)
+- O arquivo SQLite será criado automaticamente em `/2fauth/database.sqlite` na primeira inicialização
+- Se o erro persistir, verifique os logs da aplicação para ver a mensagem de erro exata
 
 ### WebAuthn Não Funciona
 

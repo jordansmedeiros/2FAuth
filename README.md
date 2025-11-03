@@ -1,97 +1,91 @@
-# 2FAuth
+# Sinesys Authenticator (fork de 2FAuth)
 
 ![Docker build status](https://img.shields.io/github/actions/workflow/status/bubka/2fauth/ci-docker-test.yml?branch=master&style=flat-square)
 ![https://codecov.io/gh/Bubka/2FAuth](https://img.shields.io/codecov/c/github/Bubka/2FAuth?style=flat-square)
 ![https://github.com/Bubka/2FAuth/blob/master/LICENSE](https://img.shields.io/github/license/Bubka/2FAuth.svg?style=flat-square)
 
-A web app to manage your Two-Factor Authentication (2FA) accounts and generate their security codes
+Aplicativo web para gerenciar contas de Autenticação em Duas Etapas (2FA) e gerar códigos de segurança.
+
+Este projeto é um fork do [2FAuth](https://github.com/Bubka/2FAuth), com customizações e distribuição pela [Sinesys](https://github.com/SinesysTech/SinesysAuthenticator).
 
 ![screens](https://user-images.githubusercontent.com/858858/100485897-18c21400-3102-11eb-9c72-ea0b1b46ef2e.png)
 
 [**2FAuth Demo**](https://demo.2fauth.app/)  
 Credentials (login - password) : `demo@2fauth.app` - `demo`
 
-## Purpose
+## Propósito
 
-2FAuth is a web based self-hosted alternative to One Time Passcode (OTP) generators like Google Authenticator, designed for both mobile and desktop.
+Alternativa web e auto-hospedada a geradores de OTP como Google Authenticator, pensada para desktop e mobile.
 
-It aims to ease you perform your 2FA authentication steps whatever the device you handle, with a clean and suitable interface.
+Objetivos principais:
 
-I created it because :
+- Interface simples para gerenciar contas 2FA
+- Armazenamento em banco próprio (backup/restauração fáceis)
+- Uso confortável em desktop e mobile
 
-* Most of the UIs for this kind of apps show tokens for all accounts in the same time with stressful countdowns (in my opinion)
-* I wanted my 2FA accounts to be stored in a standalone database I can easily backup and restore (did you already encountered a smartphone loss with all your 2FA accounts in Google Auth? I did...)
-* I hate taking out my smartphone to get an OTP when I use a desktop computer
-* I love coding and I love self-hosted solutions
+## Principais recursos
 
-## Main features
-
-* Manage your 2FA accounts and organize them using Groups
-* Scan and decode any QR code to add account in no time
-* Add custom account without QR code thanks to an advanced form
-* Edit accounts, even the imported ones
-* Generate TOTP and HOTP security codes and Steam Guard codes
+* Gerencie contas 2FA e organize por grupos
+* Leia QR Codes para adicionar contas rapidamente
+* Adicione contas manualmente via formulário avançado
+* Edite contas (inclusive importadas)
+* Gere códigos TOTP/HOTP e Steam Guard
 
 2FAuth is currently fully localized in English and French. See [Contributing](#contributing) if you want to help on adding more languages.
 
-## Security
+## Segurança
 
-2FAuth provides several security mechanisms to protect your 2FA data as best as possible.
+Inclui mecanismos para proteger seus dados 2FA.
 
-### Single user app
+### Aplicativo de usuário único
 
-You have to create a user account and authenticate yourself to use the app. It is not possible to create more than one user account, the app is thought for personal use.
+Um único usuário por instância; pensado para uso pessoal.
 
-### Modern authentication
+### Autenticação moderna
 
-You can sign in 2FAuth using a security key like a Yubikey or a Titan key and disable the traditional login form.
+Suporte a WebAuthn (chaves de segurança) e opção de desativar login tradicional.
 
-### Data encryption
+### Criptografia de dados
 
-Sensitive data stored in the database can be encrypted to protect them against db compromise. Encryption is provided as an option which is disabled by default. It is strongly recommended to backup the APP_KEY value of your .env file (or the whole file) when encryption is On.
+Dados sensíveis podem ser criptografados. Faça backup do `APP_KEY` quando ativar.
 
-### Auto logout
+### Logout automático
 
-2FAuth automatically log you out after an inactivity period to prevent long life session. The auto logout can be deactivated or triggered when a security code is copied.
+Logout após inatividade (configurável).
 
-### RFC compliance
+### Conformidade RFC
 
-2FAuth generates OTP according to RFC 4226 (HOTP Algorithm) and RFC 6238 (TOTP Algorithm) thanks to [Spomky-Labs/OTPHP](https://github.com/Spomky-Labs/otphp) php library.
+Geração OTP conforme RFC 4226/6238 via [Spomky-Labs/OTPHP](https://github.com/Spomky-Labs/otphp).
 
-## Requirements
+## Requisitos
 
 * [![Requires PHP8](https://img.shields.io/badge/php-^8.3-red.svg?style=flat-square)](https://secure.php.net/downloads.php)
-* See [Laravel server requirements](https://laravel.com/docs/installation#server-requirements)
-* Any database [supported by Laravel](https://laravel.com/docs/database)
+* Requisitos do Laravel: [documentação](https://laravel.com/docs/installation#server-requirements)
+* Qualquer banco suportado pelo Laravel (usamos SQLite por padrão)
 
-## Installation guides
+## Instalação
 
-* [Self-hosted server](https://docs.2fauth.app/getting-started/installation/self-hosted-server/)
+* CapRover: ver `CAPROVER.md`
+* Docker: imagem própria ou build via Dockerfile do repositório
 
-* [Docker (cli)](https://docs.2fauth.app/getting-started/installation/docker/docker-cli/)
+## Atualização
 
-* [Docker (compose)](https://docs.2fauth.app/getting-started/installation/docker/docker-compose/)
+Siga o processo de deploy para reconstruir a imagem; o app executa migrações automaticamente.
 
-* [Heroku](https://docs.2fauth.app/getting-started/installation/heroku/)
+## Migração
 
-## Upgrading
-
-* [Upgrade guide](https://docs.2fauth.app/getting-started/upgrade/)
-
-## Migration
-
-2FAuth supports importing from the following formats: 2FAuth (JSON), Google Auth (QR code), Aegis Auth (JSON, plain text), 2FAS Auth (JSON)
+Suporta importação de: 2FAuth (JSON), Google Auth (QR), Aegis Auth (JSON), 2FAS Auth (JSON).
 
 * [Import guide](https://docs.2fauth.app/getting-started/usage/import/)
 
-## Contributing
+## Contribuindo
 
-You can contribute to 2FAuth in many ways:
+Você pode contribuir de várias formas:
 
-* By [reporting bugs](https://github.com/Bubka/2FAuth/issues/new?template=bug_report.md), or even better, by submitting a fix with a pull request on the *dev* branch.
-* By [suggesting enhancement or new feature](https://github.com/Bubka/2FAuth/issues/new?template=feature_request.md). Please have a look to the [2FAuth development project](https://github.com/users/Bubka/projects/1), maybe your idea is already there.
-* By correcting or completing translations in a language you speak, using the [Crowdin platform](https://crowdin.com/project/2fauth). Ask for your language if this one is lacking.
+* Reportando issues ou enviando PRs
+* Sugerindo melhorias
+* Ajudando com traduções
 
-## License
+## Licença
 
 [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)

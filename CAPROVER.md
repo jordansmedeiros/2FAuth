@@ -1,11 +1,11 @@
-# Deploy do 2FAuth no CapRover
+# Deploy do Sinesys Authenticator no CapRover
 
-Este guia descreve como fazer o deploy do 2FAuth no CapRover usando deploy automático via webhook do GitHub.
+Este guia descreve como fazer o deploy do Sinesys Authenticator (fork do 2FAuth) no CapRover usando deploy automático via webhook do GitHub.
 
 ## Pré-requisitos
 
 - CapRover instalado e configurado
-- Repositório GitHub do 2FAuth
+- Repositório GitHub do Sinesys Authenticator
 - Acesso ao painel do CapRover
 
 ## Resumo Rápido
@@ -30,7 +30,7 @@ Pronto! O restante funciona automaticamente.
 
 1. Acesse o painel do CapRover
 2. Vá para "Apps" e clique em "One-Click Apps/Database" ou crie uma nova app manualmente
-3. Clique em "Create New App" e dê um nome para sua aplicação (ex: `2fauth`)
+3. Clique em "Create New App" e dê um nome para sua aplicação (ex: `sinesys-auth`)
 4. **⚠️ IMPORTANTE:** Marque a opção **"Has Persistent Data"** (Possui dados persistentes)
    - Esta opção é essencial para que o banco de dados SQLite e os arquivos de storage sejam preservados
 5. Certifique-se de que a aplicação está configurada para escutar na porta interna (CapRover detecta automaticamente a porta EXPOSE do Dockerfile)
@@ -68,7 +68,7 @@ Configure estas variáveis no painel do CapRover em **App Configs** > **Environm
 
 ```env
 APP_KEY=<string-de-exatamente-32-caracteres>
-APP_URL=https://2fauth.seudominio.com
+APP_URL=https://auth.seudominio.com
 APP_ENV=production
 TRUSTED_PROXIES=*
 ```
@@ -88,7 +88,7 @@ TRUSTED_PROXIES=*
 
 **✅ SQLite é a configuração padrão e funciona automaticamente!**
 
-O 2FAuth está configurado para usar SQLite por padrão. Você **NÃO precisa** configurar nenhuma variável de ambiente relacionada ao banco de dados. O sistema:
+O Sinesys Authenticator está configurado para usar SQLite por padrão. Você **NÃO precisa** configurar nenhuma variável de ambiente relacionada ao banco de dados. O sistema:
 
 - ✅ Cria automaticamente o arquivo `database.sqlite` em `/2fauth/database.sqlite`
 - ✅ Executa as migrações automaticamente na primeira inicialização
@@ -121,7 +121,7 @@ MAIL_PORT=587
 MAIL_USERNAME=seu-email@exemplo.com
 MAIL_PASSWORD=sua-senha
 MAIL_ENCRYPTION=tls
-MAIL_FROM_NAME="2FAuth"
+MAIL_FROM_NAME="Sinesys Authenticator"
 MAIL_FROM_ADDRESS=noreply@exemplo.com
 MAIL_VERIFY_SSL_PEER=true
 ```
@@ -136,7 +136,7 @@ AUTHENTICATION_LOG_RETENTION=365
 #### WebAuthn
 
 ```env
-WEBAUTHN_NAME=2FAuth
+WEBAUTHN_NAME="Sinesys Authenticator"
 WEBAUTHN_ID=null
 WEBAUTHN_USER_VERIFICATION=preferred
 ```
@@ -153,7 +153,7 @@ CONTENT_SECURITY_POLICY=true
 
 ## Persistência de Dados
 
-O 2FAuth armazena dados no diretório `/2fauth` dentro do container:
+O Sinesys Authenticator armazena dados no diretório `/2fauth` dentro do container:
 
 - **Database SQLite**: `/2fauth/database.sqlite` (criado automaticamente)
 - **Storage**: `/2fauth/storage` (logs, cache, arquivos temporários)
@@ -175,7 +175,7 @@ No CapRover, configure um volume para persistir os dados:
    
    **Rótulo** (Label):
    ```
-   2fauth-data
+   sinesys-auth-data
    ```
    - Este é apenas um nome identificador para você (pode ser qualquer nome descritivo)
    - Exemplos: `2fauth-data`, `dados-2fauth`, `persistent-storage`
@@ -189,8 +189,8 @@ Isso garantirá que seus dados sejam preservados mesmo após atualizações ou r
 **Nota sobre SQLite:** O banco de dados SQLite será criado automaticamente no primeiro deploy dentro do volume persistente. Não é necessário criar manualmente o arquivo `database.sqlite`.
 
 **Resumo dos campos:**
-- **Caminho no App**: `/2fauth` (caminho fixo usado pelo 2FAuth)
-- **Rótulo**: Qualquer nome descritivo (ex: `2fauth-data`)
+- **Caminho no App**: `/2fauth` (caminho fixo usado pelo app)
+- **Rótulo**: Qualquer nome descritivo (ex: `sinesys-auth-data`)
 
 ## Configuração de Domínio
 
@@ -210,7 +210,7 @@ No painel do CapRover:
 
 ### Health Check
 
-O 2FAuth expõe a porta 8000. O CapRover automaticamente verifica a saúde da aplicação através dessa porta.
+O app expõe a porta 8000. O CapRover automaticamente verifica a saúde da aplicação através dessa porta.
 
 ## Troubleshooting
 
@@ -271,6 +271,6 @@ Ou use SSH no servidor CapRover e copie o diretório do volume diretamente.
 ## Recursos Adicionais
 
 - [Documentação do CapRover](https://caprover.com/docs/get-started.html)
-- [Documentação do 2FAuth](https://docs.2fauth.app)
-- [Repositório do 2FAuth](https://github.com/Bubka/2FAuth)
+- [Repositório do Sinesys Authenticator](https://github.com/SinesysTech/SinesysAuthenticator)
+- [Projeto base 2FAuth](https://github.com/Bubka/2FAuth)
 

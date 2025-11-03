@@ -33,7 +33,7 @@ return [
     'sign_in_using_security_device' => 'Fazer login usando um dispositivo de segurança',
     'login_and_password' => 'usuário e senha',
     'register' => 'Cadastro',
-    'welcome_to_2fauth' => 'Bem-vindo(a) ao 2FAuth',
+    'welcome_to_2fauth' => 'Bem-vindo ao Sinesys Authenticator',
     'autolock_triggered' => 'Bloqueio automático acionado',
     'autolock_triggered_punchline' => 'Bloqueio automático acionado, você foi desconectado',
     'already_authenticated' => 'Já autenticado, por favor, saia primeiro',

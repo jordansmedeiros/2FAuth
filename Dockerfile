@@ -126,7 +126,7 @@ RUN chmod 500 /usr/local/bin/entrypoint.sh
 
 ENV \
     # You can change the name of the app
-    APP_NAME=2FAuth \
+    APP_NAME="Sinesys Authenticator" \
     # You can leave this on "local". If you change it to production most console commands will ask for extra confirmation.
     # Never set it to "testing".
     APP_ENV=local \
@@ -218,7 +218,7 @@ ENV \
     PROXY_LOGOUT_URL=null \
     # WebAuthn settings
     # Relying Party name, aka the name of the application. If blank, defaults to APP_NAME. Do not set to null.
-    WEBAUTHN_NAME=2FAuth \
+    WEBAUTHN_NAME="Sinesys Authenticator" \
     # Relying Party ID, should equal the site domain (i.e 2fauth.example.com).
     # If null, the device will fill it internally (recommended)
     # See https://webauthn-doc.spomky-labs.com/prerequisites/the-relying-party#how-to-determine-the-relying-party-id

@@ -11,7 +11,7 @@
       </p>
       <p>Este link expira em 60 minutos.</p>
       <p>Se você não solicitou esta ação, ignore este e‑mail.</p>
-      <p style="margin-top:24px;">Atenciosamente,<br>2FAuth</p>
+      <p style="margin-top:24px;">Atenciosamente,<br>Sinesys Authenticator</p>
       <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
       <p style="font-size:12px;color:#64748b;">Se tiver problemas ao clicar no botão, copie e cole a URL abaixo no navegador:</p>
       <p style="font-size:12px;color:#64748b;word-break:break-all;">{{ $url }}</p>

@@ -1,6 +1,6 @@
 {
-  "short_name": "2FAuth",
-  "name": "2FAuth",
+  "short_name": "Sinesys Auth",
+  "name": "Sinesys Authenticator",
   "icons": [
     {
       "src": "/favicon_lg.png",
@@ -26,7 +26,7 @@
     {
       "name": "Settings",
       "url": "/settings/options",
-      "description": "Manage your 2FAuth user settings"
+      "description": "Manage your Sinesys Authenticator user settings"
     }
   ]
 }

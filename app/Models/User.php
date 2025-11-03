@@ -200,7 +200,7 @@ class User extends Authenticatable implements HasLocalePreference, WebAuthnAuthe
      */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPassword($token));
+        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
 
     /**

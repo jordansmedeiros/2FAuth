@@ -14,25 +14,35 @@
         <h1 class="title has-text-grey-dark">{{ $t('commons.about') }}</h1>
         <p class="block">
             <span :class="mode == 'dark' ? 'has-text-white':'has-text-black'">
-                <span class="is-size-5">2FAuth</span>
+                <span class="is-size-5">Sinesys Authenticator</span>
                 <span v-if="user.isAuthenticated"> v{{ $2fauth.version }}</span>
             </span>
             <br />
-            {{ $t('commons.2fauth_teaser')}}
+            Um aplicativo web para gerenciar contas de Autenticação em Duas Etapas (2FA) e gerar códigos de segurança.
+            <br />
+            Projeto baseado em <a href="https://github.com/Bubka/2FAuth" target="_blank">2FAuth</a> (fork), com ajustes e distribuição pela Sinesys.
         </p>
-        <img class="about-logo" src="logo.svg" alt="2FAuth logo" />
+        <img class="about-logo" src="logo.svg" alt="Sinesys Authenticator logo" />
         <p class="block">
-            ©Bubka <a class="is-size-7" href="https://github.com/Bubka/2FAuth/blob/master/LICENSE">AGPL-3.0 license</a>
+            © Sinesys • <a class="is-size-7" href="https://github.com/SinesysTech/SinesysAuthenticator">Sinesys Authenticator</a> •
+            <a class="is-size-7" href="https://github.com/Bubka/2FAuth">Fork de 2FAuth</a> •
+            <a class="is-size-7" href="https://github.com/Bubka/2FAuth/blob/master/LICENSE">AGPL-3.0 license</a>
         </p>
         <h2 class="title is-5 has-text-grey-light">
             {{ $t('commons.resources') }}
         </h2>
         <div class="buttons">
+            <a class="button" :class="{'is-dark' : mode == 'dark'}" href="https://github.com/SinesysTech/SinesysAuthenticator" target="_blank">
+                <span class="icon is-small">
+                    <FontAwesomeIcon :icon="['fab', 'github-alt']" />
+                </span>
+                <span>GitHub (Sinesys)</span>
+            </a>
             <a class="button" :class="{'is-dark' : mode == 'dark'}" href="https://github.com/Bubka/2FAuth" target="_blank">
                 <span class="icon is-small">
                     <FontAwesomeIcon :icon="['fab', 'github-alt']" />
                 </span>
-                <span>Github</span>
+                <span>GitHub (2FAuth)</span>
             </a>
             <a class="button" :class="{'is-dark' : mode == 'dark'}" href="https://docs.2fauth.app/" target="_blank">
                 <span class="icon is-small">

@@ -120,7 +120,7 @@
 
 <template>
     <!-- webauthn authentication -->
-    <FormWrapper v-if="activeForm == 'webauthn'" title="auth.forms.webauthn_login" punchline="auth.welcome_to_2fauth">
+    <FormWrapper v-if="activeForm == 'webauthn'" title="auth.forms.webauthn_login" punchline="Bem-vindo ao Sinesys Authenticator">
         <div v-if="appSettings.enableSso == true && appSettings.useSsoOnly == true" class="notification is-warning has-text-centered" v-html="$t('auth.forms.sso_only_form_restricted_to_admin')" />
         <div class="field">
             {{ $t('auth.webauthn.use_security_device_to_sign_in') }}
@@ -162,7 +162,7 @@
         </div>
     </FormWrapper>
     <!-- SSO only links -->
-    <FormWrapper v-else-if="activeForm == 'sso'" title="auth.forms.sso_login" punchline="auth.welcome_to_2fauth">
+    <FormWrapper v-else-if="activeForm == 'sso'" title="auth.forms.sso_login" punchline="Bem-vindo ao Sinesys Authenticator">
         <div v-if="$2fauth.isDemoApp" class="notification is-info has-text-centered is-radiusless" v-html="$t('auth.forms.welcome_to_demo_app_use_those_credentials')" />
         <div v-if="$2fauth.isTestingApp" class="notification is-warning has-text-centered is-radiusless" v-html="$t('auth.forms.welcome_to_testing_app_use_those_credentials')" />
         <div class="nav-links">
@@ -190,7 +190,7 @@
         </div>
     </FormWrapper>
     <!-- login/password legacy form -->
-    <FormWrapper v-else-if="activeForm == 'legacy'" title="auth.forms.login" punchline="auth.welcome_to_2fauth">
+    <FormWrapper v-else-if="activeForm == 'legacy'" title="auth.forms.login" punchline="Bem-vindo ao Sinesys Authenticator">
         <div v-if="$2fauth.isDemoApp" class="notification is-info has-text-centered is-radiusless" v-html="$t('auth.forms.welcome_to_demo_app_use_those_credentials')" />
         <div v-if="$2fauth.isTestingApp" class="notification is-warning has-text-centered is-radiusless" v-html="$t('auth.forms.welcome_to_testing_app_use_those_credentials')" />
         <div v-if="appSettings.enableSso == true && appSettings.useSsoOnly == true" class="notification is-warning has-text-centered" v-html="$t('auth.forms.sso_only_form_restricted_to_admin')" />

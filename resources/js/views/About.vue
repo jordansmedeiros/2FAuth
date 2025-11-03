@@ -22,7 +22,7 @@
             <br />
             Projeto baseado em <a href="https://github.com/Bubka/2FAuth" target="_blank">2FAuth</a> (fork), com ajustes e distribuição pela Sinesys.
         </p>
-        <img class="about-logo" src="logo.svg" alt="Sinesys Authenticator logo" />
+        <img class="about-logo" src="/logo.png" alt="Sinesys Authenticator logo" />
         <p class="block">
             © Sinesys • <a class="is-size-7" href="https://github.com/SinesysTech/SinesysAuthenticator">Sinesys Authenticator</a> •
             <a class="is-size-7" href="https://github.com/Bubka/2FAuth">Fork de 2FAuth</a> •
